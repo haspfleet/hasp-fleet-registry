@@ -524,7 +524,7 @@ function renderVehicle(v) {
   qr.style.cssText = "display:flex;justify-content:center;";
 
   const qrText =
-    "https://haspfleet.github.io/registry-verification-test/?id=" +
+    "https://haspfleet.github.io/hasp-fleet-registry/?id=" +
     encodeURIComponent(v.id);
 
   if (typeof window.qrcode === "function") {
@@ -805,7 +805,7 @@ $("printQrLabelsButton").addEventListener("click", () => {
 
   const labels = list.map(v => {
     const qrText =
-      "https://haspfleet.github.io/registry-verification-test/?id=" +
+      "https://haspfleet.github.io/hasp-fleet-registry/?id=" +
       encodeURIComponent(v.id);
 
     const code = window.qrcode(0, "M");
