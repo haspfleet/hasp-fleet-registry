@@ -929,6 +929,111 @@ function escapeHtml(value) {
 $("logoutVehicle").addEventListener("click", logout);
 $("logoutFleet").addEventListener("click", logout);
 
+ // Διαχείριση Κωδικών — προσωρινό παράθυρο
+const passwordManagementModal = document.createElement("div");
+passwordManagementModal.id = "passwordManagementModal";
+passwordManagementModal.style.cssText =
+  "position:fixed;inset:0;background:rgba(0,0,0,.55);" +
+  "display:none;align-items:center;justify-content:center;" +
+  "z-index:9999;padding:20px;box-sizing:border-box;";
+
+passwordManagementModal.innerHTML = `
+  <div style="background:#fff;border:1px solid #d4e2f1;
+              border-radius:16px;padding:24px;
+              width:min(100%,620px);position:relative;
+              box-shadow:0 12px 40px rgba(20,60,100,.25);
+              color:#123e6c;">
+    <button id="closePasswordManagement"
+            type="button" aria-label="Κλείσιμο"
+            style="position:absolute;right:18px;top:16px;
+                   border:0;background:transparent;color:#526f8d;
+                   font-size:28px;cursor:pointer;padding:0 6px;">×</button>
+
+    <h2 style="margin:0 40px 12px 0;font-size:28px;">
+      Διαχείριση Κωδικών
+    </h2>
+    <p style="margin:0 0 18px;color:#6484a8;font-size:17px;">
+      Επιλέξτε τον ρόλο για αλλαγή κοινού κωδικού
+    </p>
+
+    <div style="display:grid;gap:12px;">
+      <button type="button" class="password-role-option"
+              style="padding:18px;text-align:left;border:1px solid #d4e2f1;
+                     border-radius:9px;background:#fff;color:#123e6c;
+                     font-size:17px;font-weight:600;cursor:pointer;">
+        User / ATSEP
+        <span style="display:block;font-size:13px;font-weight:400;
+                     color:#6484a8;margin-top:6px;">
+          Ο νέος κοινός κωδικός θα ισχύει για όλους τους χρήστες του ρόλου.
+        </span>
+        <span style="display:block;margin-top:8px;color:#526f8d;">
+          Αλλαγή κωδικού ›
+        </span>
+      </button>
+
+      <button type="button" class="password-role-option"
+              style="padding:18px;text-align:left;border:1px solid #d4e2f1;
+                     border-radius:9px;background:#fff;color:#123e6c;
+                     font-size:17px;font-weight:600;cursor:pointer;">
+        Supervisor / Inspector
+        <span style="display:block;font-size:13px;font-weight:400;
+                     color:#6484a8;margin-top:6px;">
+          Ο νέος κοινός κωδικός θα ισχύει για όλους τους επιτηρούντες του ρόλου.
+        </span>
+        <span style="display:block;margin-top:8px;color:#526f8d;">
+          Αλλαγή κωδικού ›
+        </span>
+      </button>
+
+      <button type="button" class="password-role-option"
+              style="padding:18px;text-align:left;border:1px solid #d4e2f1;
+                     border-radius:9px;background:#fff;color:#123e6c;
+                     font-size:17px;font-weight:600;cursor:pointer;">
+        Admin
+        <span style="display:block;font-size:13px;font-weight:400;
+                     color:#6484a8;margin-top:6px;">
+          Ο νέος κοινός κωδικός θα ισχύει για όλους τους διαχειριστές του ρόλου.
+        </span>
+        <span style="display:block;margin-top:8px;color:#526f8d;">
+          Αλλαγή κωδικού ›
+        </span>
+      </button>
+    </div>
+
+    <p id="passwordManagementNotice"
+       role="status"
+       style="display:none;text-align:center;margin:18px 0 0;
+              padding:13px;background:#eef5fc;border-radius:8px;
+              color:#315d86;font-weight:600;">
+      Υπό κατασκευή / Under construction
+    </p>
+  </div>
+`;
+
+document.body.appendChild(passwordManagementModal);
+
+$("passwordManagementButton").addEventListener("click", () => {
+  if (role !== "admin") return;
+  $("passwordManagementNotice").style.display = "none";
+  passwordManagementModal.style.display = "flex";
+});
+
+$("closePasswordManagement").addEventListener("click", () => {
+  passwordManagementModal.style.display = "none";
+});
+
+passwordManagementModal.addEventListener("click", event => {
+  if (event.target === passwordManagementModal) {
+    passwordManagementModal.style.display = "none";
+  }
+});
+
+passwordManagementModal.querySelectorAll(".password-role-option")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      $("passwordManagementNotice").style.display = "block";
+    });
+  }); 
 logout();
 </script>
 </body>
