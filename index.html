@@ -260,6 +260,7 @@ footer .footer-subtitle {
       <button id="addButton" hidden>+ Προσθήκη</button>
       <button id="exportButton" class="secondary">Εξαγωγή CSV</button>
       <button id="printQrLabelsButton" class="secondary" hidden>Print QR Label(s)</button>
+      <button id="passwordManagementButton" class="secondary" hidden>Διαχείριση Κωδικών</button>
       <button id="logoutFleet" class="light">Αποσύνδεση</button>
     </div>
     <div class="toolbar">
@@ -595,6 +596,7 @@ async function loadFleet() {
   show("fleetPanel", true);
   show("addButton", role === "admin");
   show("printQrLabelsButton", role === "admin");
+  show("passwordManagementButton", role === "admin");
   show("exportButton", role === "admin" || role === "supervisor");
   $("fleetHeading").textContent =
     role === "admin" ? "Διαχείριση Στόλου / Admin" : "Στόλος / Supervisor";
@@ -926,7 +928,69 @@ function escapeHtml(value) {
 }
 $("logoutVehicle").addEventListener("click", logout);
 $("logoutFleet").addEventListener("click", logout);
+  
+// Διαχείριση Κωδικών — δοκιμαστικό παράθυρο
+const passwordManagementModal = document.createElement("div");
+passwordManagementModal.id = "passwordManagementModal";
+passwordManagementModal.style.cssText =
+  "position:fixed;inset:0;background:rgba(0,0,0,.55);" +
+  "display:none;align-items:center;justify-content:center;" +
+  "z-index:9999;padding:20px;";
 
+passwordManagementModal.innerHTML = `
+  <div style="background:white;border-radius:12px;padding:24px;
+              width:min(100%,460px);position:relative;
+              box-shadow:0 8px 30px rgba(0,0,0,.25);">
+    <button id="closePasswordManagement"
+            type="button" aria-label="Κλείσιμο"
+            style="position:absolute;right:12px;top:12px;
+                   background:#526579;padding:6px 11px;">X</button>
+    <h2 style="margin:0 35px 20px 0;">
+      Διαχείριση Κωδικών
+    </h2>
+    <div style="display:grid;gap:12px;">
+      <button type="button" class="password-role-option">
+        User / ATSEP
+      </button>
+      <button type="button" class="password-role-option">
+        Supervisor / Inspector
+      </button>
+      <button type="button" class="password-role-option">
+        Admin
+      </button>
+    </div>
+    <p id="passwordManagementNotice"
+       style="display:none;text-align:center;margin:20px 0 0;
+              padding:12px;background:#eef5fc;border-radius:7px;">
+      Υπό κατασκευή / Under construction
+    </p>
+  </div>
+`;
+
+document.body.appendChild(passwordManagementModal);
+
+$("passwordManagementButton").addEventListener("click", () => {
+  if (role !== "admin") return;
+  $("passwordManagementNotice").style.display = "none";
+  passwordManagementModal.style.display = "flex";
+});
+
+$("closePasswordManagement").addEventListener("click", () => {
+  passwordManagementModal.style.display = "none";
+});
+
+passwordManagementModal.addEventListener("click", event => {
+  if (event.target === passwordManagementModal) {
+    passwordManagementModal.style.display = "none";
+  }
+});
+
+passwordManagementModal.querySelectorAll(".password-role-option")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      $("passwordManagementNotice").style.display = "block";
+    });
+  });
 logout();
 </script>
 </body>
