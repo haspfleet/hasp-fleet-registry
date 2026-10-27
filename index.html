@@ -260,6 +260,7 @@ footer .footer-subtitle {
       <button id="addButton" hidden>+ Προσθήκη</button>
       <button id="exportButton" class="secondary">Εξαγωγή CSV</button>
       <button id="printQrLabelsButton" class="secondary" hidden>Print QR Label(s)</button>
+      <button id="passwordManagementButton" class="secondary" hidden>Διαχείριση Κωδικών</button>
       <button id="logoutFleet" class="light">Αποσύνδεση</button>
     </div>
     <div class="toolbar">
@@ -595,6 +596,7 @@ async function loadFleet() {
   show("fleetPanel", true);
   show("addButton", role === "admin");
   show("printQrLabelsButton", role === "admin");
+  show("passwordManagementButton", role === "admin");
   show("exportButton", role === "admin" || role === "supervisor");
   $("fleetHeading").textContent =
     role === "admin" ? "Διαχείριση Στόλου / Admin" : "Στόλος / Supervisor";
