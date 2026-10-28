@@ -335,7 +335,7 @@ button.logout-btn:hover {
       <h2 id="fleetHeading" style="margin:0;flex:1">Στόλος / Fleet</h2>
       <button id="addButton" class="add-vehicle-btn" hidden>🚙 + Προσθήκη</button>
       <button id="exportButton" class="export-btn">📥 Εξαγωγή CSV</button>
-      <button id="printQrLabelsButton" class="print-qr-btn" hidden>▦ Print QR Label(s)</button>
+      <button id="printQrLabelsButton" class="print-qr-btn" hidden>▦ Εκτύπωση QR code(s)</button>
       <button id="passwordManagementButton" class="password-management-btn" hidden>🔒 Διαχείριση Κωδικών</button>
       <button id="logoutFleet" class="logout-btn">↪ Αποσύνδεση</button>
     </div>
@@ -634,7 +634,7 @@ function renderVehicle(v) {
   }
 
   const printButton = document.createElement("button");
-  printButton.textContent = "Print QR label";
+  printButton.textContent = "Print QR code";
   printButton.style.cssText = "margin-top:10px;";
   printButton.addEventListener("click", () => {
     const printWindow = window.open("", "_blank");
