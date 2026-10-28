@@ -690,7 +690,7 @@ function renderFleet() {
     wrap.appendChild(makeButton("Προβολή", "secondary", () => loadVehicle(v.id, true)));
 
     if (role === "admin") {
-      wrap.appendChild(makeButton("Επεξεργασία", "", () => openEdit(v)));
+      wrap.appendChild(makeButton("Επεξεργασία", "edit-btn", () => openEdit(v)));
       wrap.appendChild(makeButton("Διαγραφή", "danger", () => deleteVehicle(v)));
     }
     actions.appendChild(wrap);
