@@ -268,6 +268,17 @@ button.edit-btn:hover {
   }
 }
 
+/* Yellow logout buttons */
+button.logout-btn {
+  background: #ffdf00;
+  color: #172b3a;
+  border: 1px solid #e6c900;
+  font-weight: 700;
+}
+
+button.logout-btn:hover {
+  background: #f5d400;
+}
   
 </style>
 </head>
@@ -313,7 +324,7 @@ button.edit-btn:hover {
     <div class="toolbar">
       <h2 style="margin:0;flex:1">Στοιχεία οχήματος / Vehicle</h2>
       <button id="backToFleet" class="secondary" hidden>Πίσω στον στόλο</button>
-      <button id="logoutVehicle" class="light">Αποσύνδεση</button>
+      <button id="logoutVehicle" class="logout-btn">↪ Αποσύνδεση</button>
     </div>
     <div id="vehicleMessage" class="message" role="status"></div>
     <div id="vehicleDetails" class="vehicle-card"></div>
@@ -326,7 +337,7 @@ button.edit-btn:hover {
       <button id="exportButton" class="export-btn">📥 Εξαγωγή CSV</button>
       <button id="printQrLabelsButton" class="print-qr-btn" hidden>▦ Print QR Label(s)</button>
       <button id="passwordManagementButton" class="password-management-btn" hidden>🔒 Διαχείριση Κωδικών</button>
-      <button id="logoutFleet" class="light">Αποσύνδεση</button>
+      <button id="logoutFleet" class="logout-btn">↪ Αποσύνδεση</button>
     </div>
     <div class="toolbar">
       <input id="searchInput" type="search"
