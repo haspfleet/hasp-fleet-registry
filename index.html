@@ -435,6 +435,9 @@ let vehicles = [];
 let currentVehicle = null;
 let editMode = "add";
 
+let sortColumn = "";
+let sortDirection = "asc";
+
 const $ = id => document.getElementById(id);
 
 function showMessage(id, text = "", isError = false) {
@@ -718,6 +721,20 @@ function filteredVehicles() {
   );
 }
 
+function sortedVehicles() {
+  const list = filteredVehicles().slice();
+
+  if (!sortColumn) return list;
+
+  return list.sort((a, b) =>
+    String(a[sortColumn] ?? "").localeCompare(
+      String(b[sortColumn] ?? ""),
+      undefined,
+      { numeric: true, sensitivity: "base" }
+    ) * (sortDirection === "asc" ? 1 : -1)
+  );
+}
+
 function makeButton(text, className, handler) {
   const b = document.createElement("button");
   b.type = "button";
@@ -727,8 +744,9 @@ function makeButton(text, className, handler) {
   return b;
 }
 
+  
 function renderFleet() {
-  const list = filteredVehicles();
+  const list = sortedVehicles();
   const body = $("fleetBody");
   body.replaceChildren();
   $("fleetCount").textContent = `Εγγραφές: ${list.length} / ${vehicles.length}`;
@@ -771,6 +789,21 @@ $("clearSearch").addEventListener("click", () => {
   renderFleet();
 });
 
+document.querySelectorAll(".sort-header").forEach(button => {
+  button.addEventListener("click", () => {
+    const column = button.dataset.sort;
+
+    if (sortColumn === column) {
+      sortDirection = sortDirection === "asc" ? "desc" : "asc";
+    } else {
+      sortColumn = column;
+      sortDirection = "asc";
+    }
+
+    renderFleet();
+  });
+});
+  
 function openAdd() {
   editMode = "add";
   $("editHeading").textContent = "Προσθήκη οχήματος";
