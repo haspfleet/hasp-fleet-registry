@@ -800,6 +800,13 @@ document.querySelectorAll(".sort-header").forEach(button => {
       sortDirection = "asc";
     }
 
+    document.querySelectorAll(".sort-header span").forEach(span => {
+      span.textContent = "";
+    });
+
+    button.querySelector("span").textContent =
+      sortDirection === "asc" ? " ↑" : " ↓";
+
     renderFleet();
   });
 });
