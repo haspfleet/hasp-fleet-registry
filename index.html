@@ -118,6 +118,21 @@ th, td {
   white-space: nowrap;
 }
 th { background: #eaf2f9; color: var(--navy); }
+
+ .sort-header {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sort-header:hover {
+  text-decoration: underline;
+} 
+  
 .actions { display: flex; gap: 6px; }
 .actions button { padding: 7px 10px; }
 .vehicle-card {
@@ -350,7 +365,11 @@ button.logout-btn:hover {
       <table>
         <thead>
           <tr>
-            <th>ID</th><th>ICAO</th><th>Call Sign</th><th>Plate</th><th>Ενέργειες</th>
+            <th>ID</th>
+<th><button type="button" class="sort-header" data-sort="icao">ICAO <span aria-hidden="true"></span></button></th>
+<th><button type="button" class="sort-header" data-sort="callsign">Call Sign <span aria-hidden="true"></span></button></th>
+<th><button type="button" class="sort-header" data-sort="plate">Plate <span aria-hidden="true"></span></button></th>
+<th>Ενέργειες</th>
           </tr>
         </thead>
         <tbody id="fleetBody"></tbody>
