@@ -1236,8 +1236,19 @@ passwordManagementModal.querySelectorAll(".password-role-option")
       if (role !== "admin") return;
 
       const selectedRole = button.dataset.passwordRole;
-      $("passwordChangeRole").textContent =
-        "Επιλεγμένος ρόλος: " + passwordRoleNames[selectedRole];
+
+      const passwordRoleIcons = {
+        user: "👤",
+        supervisor: "🛡️",
+        admin: "👑"
+      };
+
+      $("passwordChangeRole").innerHTML =
+        '<span style="font-size:36px;vertical-align:middle;margin-right:12px;">' +
+        passwordRoleIcons[selectedRole] +
+        '</span><span>Επιλεγμένος ρόλος: ' +
+        passwordRoleNames[selectedRole] +
+        '</span>';
 
       passwordChangeModal.style.display = "flex";
     });
