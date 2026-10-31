@@ -1276,6 +1276,9 @@ function closePasswordChange() {
       $(id).type = "password";
     });
 
+  $("newRolePassword").disabled = true;
+  $("confirmRolePassword").disabled = true;
+  
   // Επαναφορά κουμπιού Recovery Key.
   const recoveryButton = $("verifyRecoveryKeyButton");
 
@@ -1314,6 +1317,16 @@ passwordManagementModal.querySelectorAll(".password-role-option")
 
       selectedPasswordRole = button.dataset.passwordRole;
 
+      // Καθαρισμός και κλείδωμα πεδίων για τον νέο ρόλο.
+      ["restoreKey", "newRolePassword", "confirmRolePassword"]
+        .forEach(id => {
+          $(id).value = "";
+          $(id).type = "password";
+        });
+
+      $("newRolePassword").disabled = true;
+      $("confirmRolePassword").disabled = true;
+      
       // Επαναφορά κουμπιού Recovery Key για τον νέο ρόλο.
       const recoveryButton = $("verifyRecoveryKeyButton");
 
