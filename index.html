@@ -1359,6 +1359,9 @@ $("verifyRecoveryKeyButton").addEventListener("click", async () => {
   const recoveryButton = $("verifyRecoveryKeyButton");
   const recoveryKey = $("restoreKey").value.trim();
 
+  $("newRolePassword").disabled = true;
+  $("confirmRolePassword").disabled = true;
+  
   if (!recoveryKey) {
     recoveryButton.textContent = "Συμπλήρωσε Κλειδί";
     recoveryButton.style.background = "#dc2626";
