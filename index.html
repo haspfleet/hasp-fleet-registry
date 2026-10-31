@@ -1307,6 +1307,14 @@ passwordManagementModal.querySelectorAll(".password-role-option")
 
       selectedPasswordRole = button.dataset.passwordRole;
 
+      // Επαναφορά κουμπιού Recovery Key για τον νέο ρόλο.
+      const recoveryButton = $("verifyRecoveryKeyButton");
+
+      recoveryButton.textContent = "Έλεγχος Κλειδιού";
+      recoveryButton.style.background = "#2563eb";
+      recoveryButton.disabled = false;
+
+            
       const passwordRoleIcons = {
         user: "👤",
         supervisor: "🛡️",
