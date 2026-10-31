@@ -1285,6 +1285,13 @@ function closePasswordChange() {
   recoveryButton.textContent = "Έλεγχος Κλειδιού";
   recoveryButton.style.background = "#2563eb";
   recoveryButton.disabled = false;
+
+// Επαναφορά κουμπιού Αλλαγή Κωδικού.
+  const changeButton = $("changeRolePasswordButton");
+
+  changeButton.textContent = "Αλλαγή Κωδικού";
+  changeButton.style.background = "#2563eb";
+  
 }
 
 $("passwordManagementButton").addEventListener("click", () => {
