@@ -1347,6 +1347,42 @@ passwordChangeModal.querySelectorAll(".password-visibility-toggle")
     });
   });
 
+// Έλεγχος Recovery Key μέσω του TEST Worker.
+$("verifyRecoveryKeyButton").addEventListener("click", async () => {
+  const recoveryButton = $("verifyRecoveryKeyButton");
+  const recoveryKey = $("restoreKey").value.trim();
+
+  if (!recoveryKey) {
+    recoveryButton.textContent = "Συμπλήρωσε Κλειδί";
+    recoveryButton.style.background = "#dc2626";
+    return;
+  }
+
+  recoveryButton.disabled = true;
+  recoveryButton.textContent = "Έλεγχος...";
+
+  try {
+    const result = await request("/verify-recovery-key", {
+      method: "POST",
+      body: JSON.stringify({
+        role: selectedPasswordRole,
+        recoveryKey: recoveryKey
+      })
+    });
+
+    if (result.success && result.status === "under_construction") {
+      recoveryButton.textContent = "✓ Υπό Κατασκευή";
+      recoveryButton.style.background = "#16a34a";
+    } else {
+      throw new Error("Αποτυχία ελέγχου");
+    }
+  } catch (error) {
+    recoveryButton.textContent = "✕ Αποτυχία Ελέγχου";
+    recoveryButton.style.background = "#dc2626";
+    recoveryButton.disabled = false;
+  }
+});
+  
 $("closePasswordChange").addEventListener("click", closePasswordChange);
 $("closePasswordChangeButton").addEventListener("click", closePasswordChange);
 
