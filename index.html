@@ -1372,7 +1372,7 @@ $("verifyRecoveryKeyButton").addEventListener("click", async () => {
 
     if (result.success && result.status === "under_construction") {
       recoveryButton.textContent = "✓ Υπό Κατασκευή";
-      recoveryButton.style.background = "15803d";
+      recoveryButton.style.background = "#008000";
     } else {
       throw new Error("Αποτυχία ελέγχου");
     }
