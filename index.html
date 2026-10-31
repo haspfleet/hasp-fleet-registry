@@ -1424,6 +1424,22 @@ passwordChangeModal.addEventListener("click", event => {
   }
 });
 
+// Προσωρινός έλεγχος νέου κωδικού.
+$("changeRolePasswordButton").addEventListener("click", () => {
+  const newPassword = $("newRolePassword").value;
+  const confirmPassword = $("confirmRolePassword").value;
+  const changeButton = $("changeRolePasswordButton");
+
+  if (newPassword !== confirmPassword) {
+    changeButton.textContent = "Διαφορετικοί Κωδικοί";
+    changeButton.style.background = "#dc2626";
+    return;
+  }
+
+  changeButton.textContent = "✓ Υπό Κατασκευή";
+  changeButton.style.background = "#008000";
+});
+  
 // Ασφαλής προσωρινή κατάσταση: δεν υποβάλλονται δεδομένα.
 $("passwordChangeForm").addEventListener("submit", event => {
   event.preventDefault();
