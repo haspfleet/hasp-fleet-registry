@@ -1394,7 +1394,7 @@ $("verifyRecoveryKeyButton").addEventListener("click", async () => {
     });
 
     if (result.success && result.status === "under_construction") {
-      recoveryButton.textContent = "✓ Υπό Κατασκευή";
+      recoveryButton.textContent = "✓ Επιτυχής Έλεγχος";
       recoveryButton.style.background = "#008000";
 
       $("newRolePassword").disabled = false;
