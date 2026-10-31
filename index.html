@@ -1178,7 +1178,7 @@ passwordChangeModal.innerHTML = `
   Κλειδί Ανάκτησης / Ασφαλείας
 </label>
       <div class="password-row">
-        <input id="restoreKey" type="password" autocomplete="off"
+        <input id="restoreKey" type="password" autocomplete="off" required
                placeholder="Κλειδί Ανάκτησης / Ασφαλείας">
         <button type="button" class="light password-visibility-toggle"
                 data-target="restoreKey" aria-label="Εμφάνιση κλειδιού"
@@ -1196,7 +1196,7 @@ passwordChangeModal.innerHTML = `
   Νέος Κωδικός
 </label>
       <div class="password-row">
-        <input id="newRolePassword" type="password" autocomplete="new-password"
+        <input id="newRolePassword" type="password" autocomplete="new-password" disabled
                placeholder="Νέος Κωδικός">
         <button type="button" class="light password-visibility-toggle"
                 data-target="newRolePassword" aria-label="Εμφάνιση νέου κωδικού"
@@ -1214,7 +1214,7 @@ passwordChangeModal.innerHTML = `
   Επιβεβαίωση Νέου Κωδικού
 </label>
       <div class="password-row">
-        <input id="confirmRolePassword" type="password"
+        <input id="confirmRolePassword" type="password" disabled
                autocomplete="new-password"
                placeholder="Επιβεβαίωση Νέου Κωδικού">
         <button type="button" class="light password-visibility-toggle"
@@ -1229,7 +1229,7 @@ passwordChangeModal.innerHTML = `
         </button>
       </div>
 
-      <p role="status"
+      <p id="recoveryStatus" role="status"
          style="margin:18px 0 0;padding:13px;background:#eef5fc;
                 border-radius:8px;color:#dc2626;font-weight:700;
                 text-align:center;">
@@ -1289,12 +1289,14 @@ const passwordRoleNames = {
   admin: "Admin"
 };
 
+let selectedPasswordRole = "";
+  
 passwordManagementModal.querySelectorAll(".password-role-option")
   .forEach(button => {
     button.addEventListener("click", () => {
       if (role !== "admin") return;
 
-      const selectedRole = button.dataset.passwordRole;
+      selectedPasswordRole = button.dataset.passwordRole;
 
       const passwordRoleIcons = {
         user: "👤",
