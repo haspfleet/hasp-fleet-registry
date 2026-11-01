@@ -606,6 +606,12 @@ async function loadVehicle(id, fromFleet) {
   show("loginPanel", false);
   show("fleetPanel", false);
   show("editPanel", false);
+
+  const panel = $("vehiclePanel");
+  panel.classList.remove("vehicle-panel-animation");
+  void panel.offsetWidth;
+  panel.classList.add("vehicle-panel-animation");
+
   show("vehiclePanel", true);
   show("backToFleet", fromFleet && role === "supervisor" || fromFleet && role === "admin");
 
