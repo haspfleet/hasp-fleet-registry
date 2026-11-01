@@ -1552,8 +1552,8 @@ $("changeRolePasswordButton").addEventListener("click", async () => {
     return;
   }
 
-  if (newPassword.length < 12 || newPassword.length > 256) {
-    alert("Ο νέος κωδικός πρέπει να έχει από 12 έως 256 χαρακτήρες.");
+  if (Array.from(newPassword).length < 4 || Array.from(newPassword).length > 15) {
+    alert("Ο νέος κωδικός πρέπει να έχει από 4 έως 15 χαρακτήρες.");
     return;
   }
 
