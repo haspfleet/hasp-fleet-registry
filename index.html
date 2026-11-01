@@ -930,7 +930,7 @@ $("exportButton").addEventListener("click", () => {
 });
 
 $("printQrLabelsButton").addEventListener("click", () => {
-  if (role !== "admin") return;
+  if (role !== "admin" && role !== "supervisor") return;
 
   const list = filteredVehicles();
 
