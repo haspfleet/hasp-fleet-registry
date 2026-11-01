@@ -1378,7 +1378,11 @@ function closePasswordChange() {
 
 $("passwordManagementButton").addEventListener("click", () => {
   if (role !== "admin") return;
+
+  passwordManagementModal.classList.remove("password-management-modal-animation");
   passwordManagementModal.style.display = "flex";
+  void passwordManagementModal.offsetWidth;
+  passwordManagementModal.classList.add("password-management-modal-animation");
 });
 
 $("closePasswordManagement").addEventListener("click", () => {
