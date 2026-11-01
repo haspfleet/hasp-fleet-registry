@@ -601,10 +601,15 @@ $("loginForm").addEventListener("submit", async event => {
     $("password").value = "";
 
     if (role === "user") {
-      await loadVehicle(QR_ID, false);
-    } else {
-      await loadFleet();
-    }
+  await loadVehicle(QR_ID, false);
+} else {
+  const fleetPanel = $("fleetPanel");
+  fleetPanel.classList.remove("main-menu-animation");
+  void fleetPanel.offsetWidth;
+  fleetPanel.classList.add("main-menu-animation");
+
+  await loadFleet();
+}
   } catch (error) {
     token = "";
     role = "";
