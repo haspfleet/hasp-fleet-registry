@@ -837,6 +837,12 @@ function openAdd() {
   $("plate").value = "";
   $("vehicleId").readOnly = true;
   showMessage("editMessage", "");
+
+  const panel = $("editPanel");
+  panel.classList.remove("add-panel-animation");
+  void panel.offsetWidth;
+  panel.classList.add("add-panel-animation");
+
   show("fleetPanel", false);
   show("editPanel", true);
 }
