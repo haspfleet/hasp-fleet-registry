@@ -1342,8 +1342,8 @@ passwordChangeModal.innerHTML = `
       </button>
 
       <p class="small" style="margin-top:10px;">
-        Η αλλαγή κωδικού δεν είναι ακόμη ενεργοποιημένη.
-      </p>
+  Η αλλαγή κωδικού πραγματοποιείται μετά από επιτυχή επαλήθευση του Recovery Key.
+</p>
 
       <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:18px;">
         <button id="backToPasswordRoles" type="button" class="secondary">
@@ -1360,10 +1360,31 @@ passwordChangeModal.innerHTML = `
 
 document.body.appendChild(passwordChangeModal);
 
+const passwordRoleNames = {
+  user: "User / ATSEP",
+  supervisor: "Supervisor / Inspector",
+  admin: "Admin"
+};
+
+let selectedPasswordRole = "";
+let passwordAuthorizationId = "";
+
+function resetPasswordButtons() {
+  const recoveryButton = $("verifyRecoveryKeyButton");
+  recoveryButton.textContent = "Έλεγχος Κλειδιού";
+  recoveryButton.style.background = "#2563eb";
+  recoveryButton.disabled = false;
+
+  const changeButton = $("changeRolePasswordButton");
+  changeButton.textContent = "Αλλαγή Κωδικού";
+  changeButton.style.background = "#2563eb";
+  changeButton.disabled = false;
+}
+
 function closePasswordChange() {
   passwordChangeModal.style.display = "none";
+  passwordAuthorizationId = "";
 
-  // Καθαρίζουμε τα πεδία όταν κλείνει το παράθυρο.
   ["restoreKey", "newRolePassword", "confirmRolePassword"]
     .forEach(id => {
       $(id).value = "";
@@ -1372,20 +1393,8 @@ function closePasswordChange() {
 
   $("newRolePassword").disabled = true;
   $("confirmRolePassword").disabled = true;
-  
-  // Επαναφορά κουμπιού Recovery Key.
-  const recoveryButton = $("verifyRecoveryKeyButton");
 
-  recoveryButton.textContent = "Έλεγχος Κλειδιού";
-  recoveryButton.style.background = "#2563eb";
-  recoveryButton.disabled = false;
-
-// Επαναφορά κουμπιού Αλλαγή Κωδικού.
-  const changeButton = $("changeRolePasswordButton");
-
-  changeButton.textContent = "Αλλαγή Κωδικού";
-  changeButton.style.background = "#2563eb";
-  
+  resetPasswordButtons();
 }
 
 $("passwordManagementButton").addEventListener("click", () => {
@@ -1407,22 +1416,14 @@ passwordManagementModal.addEventListener("click", event => {
   }
 });
 
-const passwordRoleNames = {
-  user: "User / ATSEP",
-  supervisor: "Supervisor / Inspector",
-  admin: "Admin"
-};
-
-let selectedPasswordRole = "";
-  
 passwordManagementModal.querySelectorAll(".password-role-option")
   .forEach(button => {
     button.addEventListener("click", () => {
       if (role !== "admin") return;
 
       selectedPasswordRole = button.dataset.passwordRole;
+      passwordAuthorizationId = "";
 
-      // Καθαρισμός και κλείδωμα πεδίων για τον νέο ρόλο.
       ["restoreKey", "newRolePassword", "confirmRolePassword"]
         .forEach(id => {
           $(id).value = "";
@@ -1431,15 +1432,9 @@ passwordManagementModal.querySelectorAll(".password-role-option")
 
       $("newRolePassword").disabled = true;
       $("confirmRolePassword").disabled = true;
-      
-      // Επαναφορά κουμπιού Recovery Key για τον νέο ρόλο.
-      const recoveryButton = $("verifyRecoveryKeyButton");
 
-      recoveryButton.textContent = "Έλεγχος Κλειδιού";
-      recoveryButton.style.background = "#2563eb";
-      recoveryButton.disabled = false;
+      resetPasswordButtons();
 
-            
       const passwordRoleIcons = {
         user: "👤",
         supervisor: "🛡️",
@@ -1454,13 +1449,13 @@ passwordManagementModal.querySelectorAll(".password-role-option")
         '</span>';
 
       passwordChangeModal.classList.remove("password-change-modal-animation");
-passwordChangeModal.style.display = "flex";
-void passwordChangeModal.offsetWidth;
-passwordChangeModal.classList.add("password-change-modal-animation");
+      passwordChangeModal.style.display = "flex";
+      void passwordChangeModal.offsetWidth;
+      passwordChangeModal.classList.add("password-change-modal-animation");
     });
   });
 
-// Τα ματάκια λειτουργούν τοπικά, χωρίς επικοινωνία με τον Worker.
+// Εμφάνιση / απόκρυψη πεδίων κωδικών.
 passwordChangeModal.querySelectorAll(".password-visibility-toggle")
   .forEach(button => {
     button.addEventListener("click", () => {
@@ -1475,15 +1470,16 @@ passwordChangeModal.querySelectorAll(".password-visibility-toggle")
     });
   });
 
-// Έλεγχος Recovery Key μέσω του TEST Worker.
+// Επαλήθευση Recovery Key μέσω Worker.
 $("verifyRecoveryKeyButton").addEventListener("click", async () => {
   const recoveryButton = $("verifyRecoveryKeyButton");
   const recoveryKey = $("restoreKey").value.trim();
 
+  passwordAuthorizationId = "";
   $("newRolePassword").disabled = true;
   $("confirmRolePassword").disabled = true;
-  
-  if (!recoveryKey) {
+
+  if (!selectedPasswordRole || !recoveryKey) {
     recoveryButton.textContent = "Συμπλήρωσε Κλειδί";
     recoveryButton.style.background = "#dc2626";
     return;
@@ -1501,23 +1497,31 @@ $("verifyRecoveryKeyButton").addEventListener("click", async () => {
       })
     });
 
-    if (result.success && result.status === "under_construction") {
+    if (
+      result.success &&
+      result.status === "under_construction" &&
+      typeof result.authorizationId === "string" &&
+      /^[a-f0-9]{64}$/.test(result.authorizationId)
+    ) {
+      passwordAuthorizationId = result.authorizationId;
+
       recoveryButton.textContent = "✓ Επιτυχής Έλεγχος";
       recoveryButton.style.background = "#008000";
 
       $("newRolePassword").disabled = false;
       $("confirmRolePassword").disabled = false;
-      
     } else {
-      throw new Error("Αποτυχία ελέγχου");
+      throw new Error("Ο Worker δεν επέστρεψε έγκυρη εξουσιοδότηση.");
     }
   } catch (error) {
+    passwordAuthorizationId = "";
     recoveryButton.textContent = "✕ Αποτυχία Ελέγχου";
     recoveryButton.style.background = "#dc2626";
     recoveryButton.disabled = false;
+    alert(error.message);
   }
 });
-  
+
 $("closePasswordChange").addEventListener("click", closePasswordChange);
 $("closePasswordChangeButton").addEventListener("click", closePasswordChange);
 
@@ -1532,11 +1536,26 @@ passwordChangeModal.addEventListener("click", event => {
   }
 });
 
-// Προσωρινός έλεγχος νέου κωδικού.
-$("changeRolePasswordButton").addEventListener("click", () => {
+// Πραγματική αλλαγή κωδικού μέσω Worker.
+$("changeRolePasswordButton").addEventListener("click", async () => {
   const newPassword = $("newRolePassword").value;
   const confirmPassword = $("confirmRolePassword").value;
   const changeButton = $("changeRolePasswordButton");
+
+  if (role !== "admin") {
+    alert("Δεν επιτρέπεται αυτή η ενέργεια.");
+    return;
+  }
+
+  if (!passwordAuthorizationId) {
+    alert("Πρέπει πρώτα να επαληθεύσεις το Recovery Key.");
+    return;
+  }
+
+  if (newPassword.length < 12 || newPassword.length > 256) {
+    alert("Ο νέος κωδικός πρέπει να έχει από 12 έως 256 χαρακτήρες.");
+    return;
+  }
 
   if (newPassword !== confirmPassword) {
     changeButton.textContent = "Διαφορετικοί Κωδικοί";
@@ -1544,11 +1563,52 @@ $("changeRolePasswordButton").addEventListener("click", () => {
     return;
   }
 
-  changeButton.textContent = "✓ Υπό Κατασκευή";
-  changeButton.style.background = "#008000";
-});
+  changeButton.disabled = true;
+  changeButton.textContent = "Αποθήκευση...";
   
-// Ασφαλής προσωρινή κατάσταση: δεν υποβάλλονται δεδομένα.
+  try {
+    const result = await request("/change-password", {
+      method: "POST",
+      body: JSON.stringify({
+        role: selectedPasswordRole,
+        authorizationId: passwordAuthorizationId,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword
+      })
+    });
+
+    if (!result.success) {
+      throw new Error(result.error || result.message || "Η αλλαγή κωδικού απέτυχε.");
+    }
+
+    passwordAuthorizationId = "";
+
+    $("restoreKey").value = "";
+    $("newRolePassword").value = "";
+    $("confirmRolePassword").value = "";
+
+    $("newRolePassword").disabled = true;
+    $("confirmRolePassword").disabled = true;
+
+    changeButton.textContent = "✓ Επιτυχής Αλλαγή Κωδικού";
+    changeButton.style.background = "#008000";
+    changeButton.disabled = false;
+
+  } catch (error) {
+    passwordAuthorizationId = "";
+
+    $("newRolePassword").disabled = true;
+    $("confirmRolePassword").disabled = true;
+
+    changeButton.textContent = "✕ Αποτυχία Αλλαγής";
+    changeButton.style.background = "#dc2626";
+    changeButton.disabled = false;
+
+    alert(error.message + "\n\nΕάν χρειάζεται, επανάλαβε την επαλήθευση του Recovery Key.");
+  }
+});
+
+// Αποτροπή υποβολής της φόρμας με Enter.
 $("passwordChangeForm").addEventListener("submit", event => {
   event.preventDefault();
 });
