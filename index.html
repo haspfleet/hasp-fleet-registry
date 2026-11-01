@@ -1453,7 +1453,10 @@ passwordManagementModal.querySelectorAll(".password-role-option")
         passwordRoleNames[selectedPasswordRole] +
         '</span>';
 
-      passwordChangeModal.style.display = "flex";
+      passwordChangeModal.classList.remove("password-change-modal-animation");
+passwordChangeModal.style.display = "flex";
+void passwordChangeModal.offsetWidth;
+passwordChangeModal.classList.add("password-change-modal-animation");
     });
   });
 
