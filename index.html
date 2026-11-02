@@ -538,6 +538,13 @@ let sortDirection = "asc";
 
 const $ = id => document.getElementById(id);
 
+function updateForgotAdminLink() {
+  $("forgotAdminLink").hidden = $("role").value !== "admin";
+}
+
+$("role").addEventListener("change", updateForgotAdminLink);
+updateForgotAdminLink();
+  
 function showMessage(id, text = "", isError = false) {
   const el = $(id);
   el.textContent = text;
