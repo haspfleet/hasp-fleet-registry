@@ -668,6 +668,11 @@ updateForgotAdminLink();
   show("loginPanel", false);
   show("adminRecoveryPanel", true);
 }); 
+
+$("closeRecoveryButton").addEventListener("click", () => {
+  show("adminRecoveryPanel", false);
+  show("loginPanel", true);
+});
   
 function showMessage(id, text = "", isError = false) {
   const el = $(id);
