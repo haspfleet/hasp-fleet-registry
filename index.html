@@ -598,6 +598,13 @@ function updateForgotAdminLink() {
 
 $("role").addEventListener("change", updateForgotAdminLink);
 updateForgotAdminLink();
+
+ $("forgotAdminLink").addEventListener("click", event => {
+  event.preventDefault();
+
+  show("loginPanel", false);
+  show("adminRecoveryPanel", true);
+}); 
   
 function showMessage(id, text = "", isError = false) {
   const el = $(id);
