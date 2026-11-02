@@ -1633,12 +1633,6 @@ $("verifyRecoveryKeyButton").addEventListener("click", async () => {
 });
 
 $("closePasswordChange").addEventListener("click", closePasswordChange);
-$("closePasswordChangeButton").addEventListener("click", closePasswordChange);
-
-$("backToPasswordRoles").addEventListener("click", () => {
-  closePasswordChange();
-  passwordManagementModal.style.display = "flex";
-});
 
 passwordChangeModal.addEventListener("click", event => {
   if (event.target === passwordChangeModal) {
