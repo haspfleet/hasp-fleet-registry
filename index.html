@@ -437,6 +437,56 @@ button.logout-btn:hover {
     <p class="small">Η πρόσβαση καθορίζεται από τον επιλεγμένο ρόλο.</p>
   </section>
 
+ <section id="adminRecoveryPanel" class="panel" hidden>
+    <button id="closeRecoveryButton" type="button" class="secondary"
+            aria-label="Κλείσιμο">✕</button>
+
+    <div class="recovery-field">
+      <label for="recoveryKey">🗝️ Κλειδί Ανάκτησης / Ασφαλείας</label>
+      <input id="recoveryKey" type="password" autocomplete="off">
+    </div>
+
+    <div id="recoveryKeyMessage" class="message" role="status"></div>
+
+    <button id="verifyRecoveryKeyButton" type="button">
+      Έλεγχος Κλειδιού
+    </button>
+
+    <div class="recovery-field">
+      <label for="newAdminPassword">🔒 Νέος Κωδικός</label>
+      <div class="password-row">
+        <input id="newAdminPassword" type="password" disabled
+               autocomplete="new-password">
+        <button id="toggleNewAdminPassword" type="button" class="light"
+                aria-label="Εμφάνιση κωδικού">👁</button>
+      </div>
+    </div>
+
+    <div class="recovery-field">
+      <label for="confirmAdminPassword">🔒 Επιβεβαίωση Νέου Κωδικού</label>
+      <div class="password-row">
+        <input id="confirmAdminPassword" type="password" disabled
+               autocomplete="new-password">
+        <button id="toggleConfirmAdminPassword" type="button" class="light"
+                aria-label="Εμφάνιση κωδικού">👁</button>
+      </div>
+    </div>
+
+    <button id="changeAdminPasswordButton" type="button" disabled>
+      Αλλαγή Κωδικού
+    </button>
+
+    <div class="recovery-actions">
+      <button id="backToRolesButton" type="button" class="secondary">
+        ← Πίσω στους ρόλους
+      </button>
+      <button id="cancelRecoveryButton" type="button" class="secondary">
+        Κλείσιμο
+      </button>
+    </div>
+  </section>
+
+  
   <section id="vehiclePanel" class="panel" hidden>
     <div class="toolbar">
       <h2 style="margin:0;flex:1">Στοιχεία οχήματος / Vehicle Data</h2>
