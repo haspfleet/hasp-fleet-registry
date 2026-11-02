@@ -481,9 +481,20 @@ button.logout-btn:hover {
             aria-label="Κλείσιμο">✕</button>
 
     <div class="recovery-field">
-      <label for="recoveryKey">🗝️ Κλειδί Ανάκτησης / Ασφαλείας</label>
-      <input id="recoveryKey" type="password" autocomplete="off">
-    </div>
+  <label for="recoveryKey">🗝️ Κλειδί Ανάκτησης / Ασφαλείας</label>
+  <div class="password-row">
+    <input id="recoveryKey" type="password" autocomplete="off">
+    <button id="toggleRecoveryKey" type="button" class="light"
+            aria-label="Εμφάνιση κλειδιού"
+            title="Εμφάνιση/Απόκρυψη κλειδιού">
+      <svg viewBox="0 0 24 24" width="22" height="22"
+           fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    </button>
+  </div>
+</div>
 
     <div id="recoveryKeyMessage" class="message" role="status"></div>
 
@@ -715,6 +726,16 @@ $("togglePassword").addEventListener("click", () => {
   );
 });
 
+$("toggleRecoveryKey").addEventListener("click", () => {
+  const field = $("recoveryKey");
+  const reveal = field.type === "password";
+  field.type = reveal ? "text" : "password";
+  $("toggleRecoveryKey").setAttribute(
+    "aria-label", reveal ? "Απόκρυψη κλειδιού" : "Εμφάνιση κλειδιού"
+  );
+});
+  
+  
 $("loginForm").addEventListener("submit", async event => {
   event.preventDefault();
   showMessage("loginMessage", "");
