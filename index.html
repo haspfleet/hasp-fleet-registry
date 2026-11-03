@@ -611,6 +611,11 @@ function updateForgotAdminLink() {
 
 $("role").addEventListener("change", updateForgotAdminLink);
 updateForgotAdminLink();
+
+$("forgotAdminLink").addEventListener("click", event => {
+  event.preventDefault();
+  $("recoveryKeyModal").classList.add("show");
+});
   
 function showMessage(id, text = "", isError = false) {
   const el = $(id);
