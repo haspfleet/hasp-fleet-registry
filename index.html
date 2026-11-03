@@ -1891,7 +1891,13 @@ document.querySelector(".recovery-key-submit").addEventListener("click", async (
     
 if (error.status === 401) {
   setTimeout(() => {
-    document.querySelector(".recovery-key-close").click();
+    const modal = document.getElementById("recoveryKeyModal");
+    modal.classList.remove("show");
+    modal.classList.remove("closing");
+
+    const recoveryInput = document.getElementById("recoveryKeyInput");
+    recoveryInput.value = "";
+    recoveryInput.type = "password";
   }, 5000);
 }
     
