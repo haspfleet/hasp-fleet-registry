@@ -1790,6 +1790,52 @@ document.querySelector(".recovery-key-close").addEventListener("click", () => {
     modal.classList.remove("closing");
   }, 300);
 });
+
+
+document.querySelector(".recovery-key-submit").addEventListener("click", async () => {
+  const button = document.querySelector(".recovery-key-submit");
+  const recoveryKey = document.getElementById("recoveryKeyInput").value;
+
+  if (button.disabled) return;
+
+  if (!recoveryKey.trim()) {
+    alert("Παρακαλώ εισάγετε το Κλειδί Ανάκτησης.");
+    return;
+  }
+
+  button.disabled = true;
+
+  try {
+    const data = await request("/admin-recovery-login", {
+      method: "POST",
+      body: JSON.stringify({ recoveryKey })
+    });
+
+    if (
+      !data.success ||
+      data.role !== "admin" ||
+      !data.token
+    ) {
+      throw new Error("Η επαλήθευση του κλειδιού απέτυχε.");
+    }
+
+    token = data.token;
+    role = "admin";
+
+    document.getElementById("recoveryKeyInput").value = "";
+
+    document.querySelector(".recovery-key-close").click();
+
+    await loadFleet();
+
+  } catch (error) {
+    alert(error.message || "Αποτυχία σύνδεσης Admin.");
+  } finally {
+    button.disabled = false;
+  }
+});
+  
+  
 </script>
   
 </body>
