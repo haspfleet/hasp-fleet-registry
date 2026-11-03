@@ -1727,6 +1727,7 @@ $("changeRolePasswordButton").addEventListener("click", async () => {
     changeButton.textContent = "✓ Επιτυχής Αλλαγή Κωδικού";
     changeButton.style.background = "#008000";
     changeButton.disabled = false;
+    schedulePasswordChangeClose();
 
   } catch (error) {
     passwordAuthorizationId = "";
