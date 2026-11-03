@@ -1511,6 +1511,10 @@ function schedulePasswordChangeClose() {
 }
   
 function closePasswordChange() {
+  if (passwordChangeCloseTimer !== null) {
+    clearTimeout(passwordChangeCloseTimer);
+    passwordChangeCloseTimer = null;
+  }
   passwordChangeModal.style.display = "none";
   passwordAuthorizationId = "";
 
