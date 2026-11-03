@@ -1781,7 +1781,14 @@ logout();
 
 <script>
 document.querySelector(".recovery-key-close").addEventListener("click", () => {
-  document.getElementById("recoveryKeyModal").classList.remove("show");
+  const modal = document.getElementById("recoveryKeyModal");
+
+  modal.classList.add("closing");
+
+  setTimeout(() => {
+    modal.classList.remove("show");
+    modal.classList.remove("closing");
+  }, 300);
 });
 </script>
   
