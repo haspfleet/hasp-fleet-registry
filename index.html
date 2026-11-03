@@ -1502,6 +1502,14 @@ function resetPasswordButtons() {
   changeButton.disabled = false;
 }
 
+function schedulePasswordChangeClose() {
+  clearTimeout(passwordChangeCloseTimer);
+
+  passwordChangeCloseTimer = setTimeout(() => {
+    closePasswordChange();
+  }, 5000);
+}
+  
 function closePasswordChange() {
   passwordChangeModal.style.display = "none";
   passwordAuthorizationId = "";
