@@ -1737,9 +1737,8 @@ $("changeRolePasswordButton").addEventListener("click", async () => {
     changeButton.style.background = "#dc2626";
     changeButton.disabled = false;
 
-    alert(error.message + "\n\nΕάν χρειάζεται, επανάλαβε την επαλήθευση του Recovery Key.");
+    schedulePasswordChangeClose();
   }
-});
 
 // Αποτροπή υποβολής της φόρμας με Enter.
 $("passwordChangeForm").addEventListener("submit", event => {
