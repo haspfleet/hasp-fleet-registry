@@ -418,6 +418,19 @@ button.logout-btn:hover {
   }
 }
 
+.recovery-key-overlay.closing {
+  animation: recoveryKeyFadeOut 300ms ease forwards;
+}
+
+@keyframes recoveryKeyFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+  
 .recovery-key-panel {
   position: relative;
   width: 100%;
