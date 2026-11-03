@@ -1792,6 +1792,22 @@ document.querySelector(".recovery-key-close").addEventListener("click", () => {
 });
 
 
+document.querySelector(
+  '#recoveryKeyModal .password-visibility-toggle'
+).addEventListener("click", event => {
+  const button = event.currentTarget;
+  const field = document.getElementById(button.dataset.target);
+  const reveal = field.type === "password";
+
+  field.type = reveal ? "text" : "password";
+
+  button.setAttribute(
+    "aria-label",
+    reveal ? "Απόκρυψη κλειδιού" : "Εμφάνιση κλειδιού"
+  );
+});
+
+  
 document.querySelector(".recovery-key-submit").addEventListener("click", async () => {
   const button = document.querySelector(".recovery-key-submit");
   const recoveryKey = document.getElementById("recoveryKeyInput").value;
