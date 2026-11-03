@@ -1860,7 +1860,13 @@ document.querySelector(".recovery-key-submit").addEventListener("click", async (
     await loadFleet();
 
   } catch (error) {
-    alert(error.message || "Αποτυχία σύνδεσης Admin.");
+    const message = error.status === 401
+      ? "Λάθος Κλειδί"
+      : error.status === 429
+        ? "Προσπαθήστε ξανά μετά από 5 λεπτά."
+        : (error.message || "Αποτυχία σύνδεσης Admin.");
+
+    showMessage("adminRecoveryMessage", message, true);
   } finally {
     button.disabled = false;
   }
