@@ -1888,6 +1888,13 @@ document.querySelector(".recovery-key-submit").addEventListener("click", async (
         : (error.message || "Αποτυχία σύνδεσης Admin.");
 
     showMessage("adminRecoveryMessage", message, true);
+    
+if (error.status === 401) {
+  setTimeout(() => {
+    document.querySelector(".recovery-key-close").click();
+  }, 5000);
+}
+    
   } finally {
     button.disabled = false;
   }
