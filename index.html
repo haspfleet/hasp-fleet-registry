@@ -1487,6 +1487,8 @@ const passwordRoleNames = {
 
 let selectedPasswordRole = "";
 let passwordAuthorizationId = "";
+let passwordChangeCloseTimer = null;
+  
 
 function resetPasswordButtons() {
   const recoveryButton = $("verifyRecoveryKeyButton");
