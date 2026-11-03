@@ -1780,6 +1780,7 @@ logout();
 </div>
 
 <script>
+  
 document.querySelector(".recovery-key-close").addEventListener("click", () => {
   const modal = document.getElementById("recoveryKeyModal");
 
@@ -1788,6 +1789,10 @@ document.querySelector(".recovery-key-close").addEventListener("click", () => {
   setTimeout(() => {
     modal.classList.remove("show");
     modal.classList.remove("closing");
+
+    const recoveryInput = document.getElementById("recoveryKeyInput");
+    recoveryInput.value = "";
+    recoveryInput.type = "password";
   }, 300);
 });
 
