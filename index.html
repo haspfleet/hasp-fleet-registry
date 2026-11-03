@@ -681,8 +681,10 @@ async function request(path, options = {}) {
   catch { data = { error: raw || "Μη αναγνώσιμη απάντηση από τον server." }; }
 
   if (!response.ok) {
-    throw new Error(data.error || data.message || ("HTTP " + response.status));
-  }
+  const error = new Error(data.error || data.message || ("HTTP " + response.status));
+  error.status = response.status;
+  throw error;
+}
   return data;
 }
 
