@@ -1654,7 +1654,9 @@ $("verifyRecoveryKeyButton").addEventListener("click", async () => {
     recoveryButton.textContent = "✕ Αποτυχία Ελέγχου";
     recoveryButton.style.background = "#dc2626";
     recoveryButton.disabled = false;
-    alert(error.message);
+
+    showMessage("passwordChangeMessage", error.message, true);
+    schedulePasswordChangeClose();
   }
 });
 
