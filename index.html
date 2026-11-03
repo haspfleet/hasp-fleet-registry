@@ -1519,6 +1519,7 @@ function closePasswordChange() {
   }
   passwordChangeModal.style.display = "none";
   passwordAuthorizationId = "";
+  $("passwordChangeMessage").textContent = "";
 
   ["restoreKey", "newRolePassword", "confirmRolePassword"]
     .forEach(id => {
