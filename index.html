@@ -637,6 +637,7 @@ updateForgotAdminLink();
 
 $("forgotAdminLink").addEventListener("click", event => {
   event.preventDefault();
+  showMessage("adminRecoveryMessage", "");
   $("recoveryKeyModal").classList.add("show");
 });
   
