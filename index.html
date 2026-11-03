@@ -406,6 +406,16 @@ button.logout-btn:hover {
 
 .recovery-key-overlay.show {
   display: flex;
+  animation: recoveryKeyFadeIn 1000ms ease 1s both;
+}
+
+@keyframes recoveryKeyFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .recovery-key-panel {
