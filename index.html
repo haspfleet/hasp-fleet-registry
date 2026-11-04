@@ -1490,7 +1490,45 @@ const passwordRoleNames = {
 let selectedPasswordRole = "";
 let passwordAuthorizationId = "";
 let passwordChangeCloseTimer = null;
-  
+
+// Δρομολογητής επιστροφής: management ή loginRecovery.
+// Το ίδιο παράθυρο αλλαγής κωδικού εξυπηρετεί και τις δύο διαδρομές.
+let passwordChangeReturnRoute = "management";
+
+function openPasswordChange(roleToChange, returnRoute) {
+  selectedPasswordRole = roleToChange;
+  passwordChangeReturnRoute = returnRoute;
+  passwordAuthorizationId = "";
+
+  ["restoreKey", "newRolePassword", "confirmRolePassword"]
+    .forEach(id => {
+      $(id).value = "";
+      $(id).type = "password";
+    });
+
+  $("newRolePassword").disabled = true;
+  $("confirmRolePassword").disabled = true;
+  showMessage("passwordChangeMessage", "");
+  resetPasswordButtons();
+
+  const passwordRoleIcons = {
+    user: "👤",
+    supervisor: "🛡️",
+    admin: "👑"
+  };
+
+  $("passwordChangeRole").innerHTML =
+    '<span style="font-size:36px;vertical-align:middle;margin-right:12px;">' +
+    passwordRoleIcons[roleToChange] +
+    '</span><span>Επιλεγμένος ρόλος: ' +
+    passwordRoleNames[roleToChange] +
+    '</span>';
+
+  passwordChangeModal.classList.remove("password-change-modal-animation");
+  passwordChangeModal.style.display = "flex";
+  void passwordChangeModal.offsetWidth;
+  passwordChangeModal.classList.add("password-change-modal-animation");
+}
 
 function resetPasswordButtons() {
   const recoveryButton = $("verifyRecoveryKeyButton");
@@ -1531,6 +1569,15 @@ function closePasswordChange() {
   $("confirmRolePassword").disabled = true;
 
   resetPasswordButtons();
+
+  // Επιστροφή ακριβώς στο περιβάλλον από το οποίο ανοίχτηκε.
+  if (passwordChangeReturnRoute === "loginRecovery") {
+    passwordChangeReturnRoute = "management";
+    logout();
+  } else {
+    passwordChangeReturnRoute = "management";
+    // Το passwordManagementModal παραμένει ανοικτό από κάτω.
+  }
 }
 
 $("passwordManagementButton").addEventListener("click", () => {
@@ -1557,37 +1604,7 @@ passwordManagementModal.querySelectorAll(".password-role-option")
     button.addEventListener("click", () => {
       if (role !== "admin") return;
 
-      selectedPasswordRole = button.dataset.passwordRole;
-      passwordAuthorizationId = "";
-
-      ["restoreKey", "newRolePassword", "confirmRolePassword"]
-        .forEach(id => {
-          $(id).value = "";
-          $(id).type = "password";
-        });
-
-      $("newRolePassword").disabled = true;
-      $("confirmRolePassword").disabled = true;
-
-      resetPasswordButtons();
-
-      const passwordRoleIcons = {
-        user: "👤",
-        supervisor: "🛡️",
-        admin: "👑"
-      };
-
-      $("passwordChangeRole").innerHTML =
-        '<span style="font-size:36px;vertical-align:middle;margin-right:12px;">' +
-        passwordRoleIcons[selectedPasswordRole] +
-        '</span><span>Επιλεγμένος ρόλος: ' +
-        passwordRoleNames[selectedPasswordRole] +
-        '</span>';
-
-      passwordChangeModal.classList.remove("password-change-modal-animation");
-      passwordChangeModal.style.display = "flex";
-      void passwordChangeModal.offsetWidth;
-      passwordChangeModal.classList.add("password-change-modal-animation");
+      openPasswordChange(button.dataset.passwordRole, "management");
     });
   });
 
@@ -1876,9 +1893,15 @@ document.querySelector(".recovery-key-submit").addEventListener("click", async (
 
     document.getElementById("recoveryKeyInput").value = "";
 
+    // Επιτυχής είσοδος μέσω Login Recovery: ανοίγουμε το ΙΔΙΟ
+    // παράθυρο αλλαγής κωδικού Admin, χωρίς μετάβαση στον στόλο.
+    // Το Recovery Key της φόρμας αλλαγής (ένα από τα 3) επαληθεύεται
+    // κανονικά από το υπάρχον /verify-recovery-key.
     document.querySelector(".recovery-key-close").click();
 
-    await loadFleet();
+    setTimeout(() => {
+      openPasswordChange("admin", "loginRecovery");
+    }, 350);
 
   } catch (error) {
     const message = error.status === 401
